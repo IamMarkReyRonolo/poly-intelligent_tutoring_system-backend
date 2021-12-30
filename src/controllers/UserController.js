@@ -23,9 +23,7 @@ async function getAllUsers(req, res, next) {
 
 async function getDetails(req, res, next) {
 	try {
-		const result = await User.findById(req.user)
-			.select("name age gender checkpoint")
-			.lean();
+		const result = await User.findById(req.user).lean();
 		if (result) {
 			res.status(200).json(result);
 		} else {
@@ -50,6 +48,7 @@ async function createUser(req, res, next) {
 			age: req.body.age,
 			email: req.body.email,
 			password: req.body.password,
+			checkpoint: { lessonid: null, chapter_number: null },
 		});
 
 		const result = await user.save();
