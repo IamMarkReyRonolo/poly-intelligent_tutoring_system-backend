@@ -6,6 +6,8 @@ module.exports = {
 	generateLessons,
 	updateLesson,
 	updateChapter,
+	advanceUpdate,
+	averageUpdate,
 };
 
 async function getAllLessons(req, res, next) {
@@ -114,6 +116,50 @@ async function updateLesson(req, res, next) {
 	try {
 		const updated = await Lesson.findOneAndUpdate(
 			{ _id: req.params.lessonid },
+			{ status: req.body.status },
+			{ new: true }
+		);
+		if (updated) {
+			res.status(201).json({ message: "Update succesful", updated });
+		} else {
+			error = new Error("Not Found");
+			error.status = 404;
+			next(error);
+		}
+	} catch (error) {
+		next(error);
+	}
+}
+
+async function advanceUpdate(req, res, next) {
+	try {
+		console.log("yowww");
+		const updated = await Lesson.updateMany(
+			{ userid: req.user },
+			{
+				$set: {
+					status: req.body.status,
+				},
+			}
+		);
+		console.log(updated);
+		if (updated) {
+			res.status(201).json({ message: "Update succesful", updated });
+		} else {
+			error = new Error("Not Found");
+			error.status = 404;
+			next(error);
+		}
+	} catch (error) {
+		console.log(error);
+		next(error);
+	}
+}
+
+async function averageUpdate(req, res, next) {
+	try {
+		const updated = await Lesson.findOneAndUpdate(
+			{ userid: req.user, name: "Polynomial Operations" },
 			{ status: req.body.status },
 			{ new: true }
 		);

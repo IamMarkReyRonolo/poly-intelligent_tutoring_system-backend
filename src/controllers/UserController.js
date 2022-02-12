@@ -136,3 +136,27 @@ async function updateUser(req, res, next) {
 		}
 	} catch (error) {}
 }
+
+async function updateUser(req, res, next) {
+	try {
+		try {
+			const updated = await User.findByIdAndUpdate(
+				req.user,
+				{
+					learner_state: req.body.learner_state,
+					checkpoint: req.body.checkpoint,
+				},
+				{ new: true }
+			);
+			if (updated) {
+				res.status(201).json({ message: "Update succesful", updated });
+			} else {
+				error = new Error("Not Found");
+				error.status = 404;
+				next(error);
+			}
+		} catch (error) {
+			next(error);
+		}
+	} catch (error) {}
+}

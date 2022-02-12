@@ -26,6 +26,10 @@ const userSchema = new mongoose.Schema(
 			type: String,
 			required: [true, "Gender is Required"],
 		},
+		learner_state: {
+			type: String,
+			default: "To Be Determined",
+		},
 		email: {
 			type: String,
 			unique: true,

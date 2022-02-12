@@ -18,4 +18,16 @@ router.patch(
 
 router.patch("/:lessonid", auth.authenticate, LessonController.updateLesson);
 
+router.patch(
+	"/update/lessons/advance",
+	auth.authenticate,
+	LessonController.advanceUpdate
+);
+
+router.patch(
+	"/update/lessons/average",
+	auth.authenticate,
+	LessonController.averageUpdate
+);
+
 module.exports = router;
